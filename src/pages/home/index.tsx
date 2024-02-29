@@ -11,6 +11,7 @@ import {
   where,
   updateDoc,
   doc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../../services/firebaseConnection";
 import { Link } from "react-router-dom";
@@ -40,12 +41,28 @@ export function Home() {
   const [loadImages, setLoadImages] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [userFavorites, setUserFavorites] = useState<string[]>([]);
+  const [userFavorites, setUserFavorites] = useState<string[]>([]); // tem q receber do banco
   const [userFavoritesList, setUserFavoritesList] = useState<string[]>([]);
 
   useEffect(() => {
     loadCars();
-  }, []);
+
+    async function loadUserFavorites() {
+      if (!user) return;
+      console.log("oi");
+
+      const userRef = collection(db, "users");
+      const userDoc = doc(userRef, user?.uid);
+
+      const docSnap = await getDoc(userDoc);
+      if (docSnap.exists()) {
+        setUserFavorites(docSnap.data().favorites.map((item: string) => item));
+      }
+      return;
+    }
+
+    loadUserFavorites();
+  }, [user]);
 
   async function loadCars() {
     setIsLoading(true);
