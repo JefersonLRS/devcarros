@@ -57,6 +57,10 @@ export function Home() {
       const docSnap = await getDoc(userDoc);
       if (docSnap.exists()) {
         setUserFavorites(docSnap.data().favorites.map((item: string) => item));
+        setUserFavoritesList(
+          docSnap.data().favorites.map((item: string) => item)
+        );
+        user.favorites = docSnap.data().favorites.map((item: string) => item);
       }
       return;
     }
