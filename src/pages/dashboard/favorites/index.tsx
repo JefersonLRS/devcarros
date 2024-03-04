@@ -7,20 +7,14 @@ import {
   query,
   getDocs,
   where,
-  addDoc,
   doc,
+  updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../../../services/firebaseConnection";
 import { Link } from "react-router-dom";
 import { FiMapPin } from "react-icons/fi";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
-
-interface UserProps {
-  uid: string;
-  displayName: string | null;
-  email: string | null;
-  favorites: string[];
-}
 
 interface CarsProps {
   id: string;
@@ -46,6 +40,8 @@ export function Favorites() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadImages, setLoadImages] = useState<string[]>([]);
   const [userFavoriteCars, setUserFavoriteCars] = useState<string[]>([]);
+  const [userFavorites, setUserFavorites] = useState<string[]>([]); // tem q receber do banco
+  const [userFavoritesList, setUserFavoritesList] = useState<string[]>([]);
 
   useEffect(() => {
     async function loadFavoriteCars() {
@@ -71,6 +67,26 @@ export function Favorites() {
 
   useEffect(() => {
     loadCars();
+
+    async function loadUserFavorites() {
+      if (!user) return;
+      console.log("oi");
+
+      const userRef = collection(db, "users");
+      const userDoc = doc(userRef, user?.uid);
+
+      const docSnap = await getDoc(userDoc);
+      if (docSnap.exists()) {
+        setUserFavorites(docSnap.data().favorites.map((item: string) => item));
+        setUserFavoritesList(
+          docSnap.data().favorites.map((item: string) => item)
+        );
+        user.favorites = docSnap.data().favorites.map((item: string) => item);
+      }
+      return;
+    }
+
+    loadUserFavorites();
   }, [userFavoriteCars]);
 
   async function loadCars() {
@@ -100,6 +116,48 @@ export function Favorites() {
     setLoadImages((prevImageLoaded) => [...prevImageLoaded, id]);
   }
 
+  async function handleFavorite(id: string) {
+    const userRef = collection(db, "users");
+    const userDoc = doc(userRef, user?.uid);
+
+    //Se o anuncio ainda não foi favoritado
+    if (!user?.favorites.includes(id)) {
+      user?.favorites.push(id);
+
+      if (!userFavoritesList.includes(id)) {
+        userFavoritesList.push(id);
+        await updateDoc(userDoc, {
+          email: user?.email,
+          name: user?.displayName,
+          uid: user?.uid,
+          favorites: userFavoritesList,
+        });
+      }
+
+      console.log(userFavoritesList);
+
+      setUserFavorites((prevFavorites) => [...prevFavorites, id]);
+    }
+    //Se o anuncio já foi favoritado
+    else {
+      user.favorites = user?.favorites.filter((item) => item !== id);
+
+      if (userFavoritesList.includes(id)) {
+        setUserFavoritesList(userFavoritesList.filter((item) => item !== id));
+        await updateDoc(userDoc, {
+          email: user?.email,
+          name: user?.displayName,
+          uid: user?.uid,
+          favorites: userFavoritesList.filter((item) => item !== id),
+        });
+      }
+
+      setUserFavorites((prevFavorites) =>
+        prevFavorites.filter((item) => item !== id)
+      );
+    }
+  }
+
   return (
     <Container>
       <DashboardHeader />
@@ -112,6 +170,19 @@ export function Favorites() {
           <div className="w-full h-96 flex items-center justify-center">
             <l-ring stroke={6} color="black" size={90} />
           </div>
+        ) : userFavoriteCars.length === 0 ? (
+          <main className="flex items-center justify-center w-full flex-col h-screen -mt-36">
+            <h1 className="text-2xl font-bold text-gray-500">
+              Você ainda não tem anúncios favoritos...
+            </h1>
+
+            <Link
+              to="/"
+              className="flex justify-center items-center gap-2 bg-[#06233F] text-white py-3 px-8 rounded-lg ml-4 hover:bg-gray-500 transition-all cursor-pointer text-xl mt-4"
+            >
+              Explorar anúncios
+            </Link>
+          </main>
         ) : (
           <main className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 mb-10">
             {cars.map((car) => (
@@ -161,13 +232,13 @@ export function Favorites() {
                   <span className="flex items-center gap-2 text-sm">
                     <FiMapPin /> {car.city}
                   </span>
-                  {/* <button onClick={() => handleFavorite(car.id)}>
+                  <button onClick={() => handleFavorite(car.id)}>
                     {userFavorites.includes(car.id) ? (
                       <IoIosHeart color="red" />
                     ) : (
                       <IoIosHeartEmpty />
                     )}
-                  </button> */}
+                  </button>
                 </div>
               </section>
             ))}

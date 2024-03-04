@@ -41,7 +41,7 @@ export function Home() {
   const [loadImages, setLoadImages] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [userFavorites, setUserFavorites] = useState<string[]>([]); // tem q receber do banco
+  const [userFavorites, setUserFavorites] = useState<string[]>([]);
   const [userFavoritesList, setUserFavoritesList] = useState<string[]>([]);
 
   useEffect(() => {

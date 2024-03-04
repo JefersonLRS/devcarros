@@ -1,6 +1,6 @@
 import { Container } from "../../components/container";
 import { DashboardHeader } from "../../components/panelHeader";
-import { FiTrash2, FiMapPin, FiHeart, FiPlus } from "react-icons/fi";
+import { FiTrash2, FiMapPin, FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import {
@@ -136,9 +136,6 @@ export function Dashboard() {
             <div className="px-4 mb-4 flex items-center justify-between opacity-70">
               <span className="flex items-center gap-2 text-sm">
                 <FiMapPin /> {car.city}
-              </span>
-              <span>
-                <FiHeart />
               </span>
             </div>
           </section>

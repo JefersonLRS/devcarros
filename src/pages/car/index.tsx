@@ -122,7 +122,7 @@ export function CarDetail() {
           </div>
           <p>{car.make}</p>
 
-          <div className="flex gap-10 my-10">
+          <div className="flex gap-3 my-10 flex-col md:flex-row md:gap-10 lg:flex-row lg:gap-10">
             <div className="flex flex-col gap-2">
               <p>Cidade</p>
               <strong>{car.city}</strong>
