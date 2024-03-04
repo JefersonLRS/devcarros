@@ -2,7 +2,14 @@ import { Container } from "../../../components/container";
 import { DashboardHeader } from "../../../components/panelHeader";
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { collection, query, getDocs, where, addDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  getDocs,
+  where,
+  addDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../../../services/firebaseConnection";
 import { Link } from "react-router-dom";
 import { FiMapPin } from "react-icons/fi";
@@ -38,37 +45,59 @@ export function Favorites() {
   const [cars, setCars] = useState<CarsProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadImages, setLoadImages] = useState<string[]>([]);
-  const [userFavorites, setUserFavorites] = useState<string[]>([]);
-  const [users, setUsers] = useState<UserProps[]>([]);
+  const [userFavoriteCars, setUserFavoriteCars] = useState<string[]>([]);
 
   useEffect(() => {
+    async function loadFavoriteCars() {
+      if (!user) return;
+
+      setIsLoading(true);
+      const userCollectionRef = collection(db, "users");
+      const q = query(userCollectionRef, where("uid", "==", user?.uid));
+
+      let userFavoriteCarsList = [] as string[];
+
+      await getDocs(q).then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          userFavoriteCarsList = doc.data().favorites;
+        });
+      });
+      setIsLoading(false);
+      setUserFavoriteCars(userFavoriteCarsList);
+    }
+
     loadFavoriteCars();
-  }, []);
+  }, [user]);
 
-  function handleLoadImage(id: string) {
-    setLoadImages((prevImageLoaded) => [...prevImageLoaded, id]);
-  }
+  useEffect(() => {
+    loadCars();
+  }, [userFavoriteCars]);
 
-  async function loadFavoriteCars() {
-    setIsLoading(true);
-    const userRef = addDoc(collection(db, "users"), {
-      uid: user?.uid,
-      displayName: user?.displayName,
-      email: user?.email,
-      favorites: user?.favorites,
+  async function loadCars() {
+    const carRef = collection(db, "cars");
+    const docsRef = await getDocs(carRef);
+
+    docsRef.forEach((snapshot) => {
+      if (userFavoriteCars.includes(snapshot.id)) {
+        const carData = {
+          id: snapshot.id,
+          name: snapshot.data().title,
+          year: snapshot.data().year,
+          uid: snapshot.data().uid,
+          price: snapshot.data().price,
+          make: snapshot.data().make,
+          km: snapshot.data().km,
+          city: snapshot.data().city,
+          images: snapshot.data().images,
+        };
+
+        setCars((prevCars) => [...prevCars, carData]);
+      }
     });
   }
 
-  function handleFavorite(id: string) {
-    if (!user?.favorites.includes(id)) {
-      user?.favorites.push(id);
-      setUserFavorites((prevFavorites) => [...prevFavorites, id]);
-    } else {
-      user.favorites = user?.favorites.filter((item) => item !== id);
-      setUserFavorites((prevFavorites) =>
-        prevFavorites.filter((item) => item !== id)
-      );
-    }
+  function handleLoadImage(id: string) {
+    setLoadImages((prevImageLoaded) => [...prevImageLoaded, id]);
   }
 
   return (
@@ -132,13 +161,13 @@ export function Favorites() {
                   <span className="flex items-center gap-2 text-sm">
                     <FiMapPin /> {car.city}
                   </span>
-                  <button onClick={() => handleFavorite(car.id)}>
+                  {/* <button onClick={() => handleFavorite(car.id)}>
                     {userFavorites.includes(car.id) ? (
                       <IoIosHeart color="red" />
                     ) : (
                       <IoIosHeartEmpty />
                     )}
-                  </button>
+                  </button> */}
                 </div>
               </section>
             ))}
