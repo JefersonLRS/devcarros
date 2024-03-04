@@ -12,7 +12,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../services/firebaseConnection";
@@ -29,6 +29,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function Register() {
+  const [loadingAuth, setLoadingAuth] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -48,6 +49,7 @@ export function Register() {
   }, []);
 
   async function onSubmit(data: FormData) {
+    setLoadingAuth(true);
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then(async (user) => {
         await updateProfile(user.user, {
@@ -60,12 +62,16 @@ export function Register() {
           email: data.email,
           favorites: [],
         });
-
+        setLoadingAuth(false);
         toast.success("Seja bem-vindo(a), " + data.name + "!");
         navigate("/", { replace: true });
       })
       .catch((error) => {
         console.log(error);
+        setLoadingAuth(false);
+        toast.error(
+          "Falha ao cadastra-se, verifique se esse email já está em uso."
+        );
       });
   }
 
@@ -111,7 +117,11 @@ export function Register() {
           </div>
 
           <button className="bg-[#06233F] text-white w-full p-2 rounded-lg">
-            Cadastrar
+            {loadingAuth ? (
+              <l-ring stroke={2} color="white" size={25} />
+            ) : (
+              "Cadastrar"
+            )}
           </button>
         </form>
         <div>

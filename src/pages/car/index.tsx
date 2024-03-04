@@ -100,7 +100,7 @@ export function CarDetail() {
           spaceBetween={15}
         >
           {car?.images.map((images) => (
-            <SwiperSlide>
+            <SwiperSlide key={images.uid}>
               <img
                 src={images.url}
                 alt="Foto do carro"

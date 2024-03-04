@@ -47,7 +47,7 @@ export function Login() {
     await signInWithEmailAndPassword(auth, data.email, data.password)
       .then(() => {
         setLoadingAuth(false);
-        toast.success("Seja bem-vindo!");
+        toast.success("Seja bem-vindo(a)!");
         navigate("/", { replace: true });
       })
       .catch((error) => {

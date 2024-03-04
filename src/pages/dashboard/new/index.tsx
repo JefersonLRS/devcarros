@@ -82,7 +82,7 @@ export function New() {
     const currentUid = user?.uid;
     const uidImage = uuidV4();
 
-    const uploadRef = ref(storage, `images/${currentUid}/${uidImage}`);
+    const uploadRef = ref(storage, `images/${currentUid}/${uidImage}/`);
     uploadBytes(uploadRef, image).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
         const imageItem = {
@@ -121,7 +121,7 @@ export function New() {
       whatsapp: data.whatsapp,
       description: data.description,
       created: new Date(),
-      owner: user?.displayName,
+      owner: user?.displayName, //talvez seja aqui
       uid: user?.uid,
       images: carListImages,
     })
