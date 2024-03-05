@@ -70,7 +70,6 @@ export function Favorites() {
 
     async function loadUserFavorites() {
       if (!user) return;
-      console.log("oi");
 
       const userRef = collection(db, "users");
       const userDoc = doc(userRef, user?.uid);
@@ -133,8 +132,6 @@ export function Favorites() {
           favorites: userFavoritesList,
         });
       }
-
-      console.log(userFavoritesList);
 
       setUserFavorites((prevFavorites) => [...prevFavorites, id]);
     }

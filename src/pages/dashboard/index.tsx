@@ -66,7 +66,6 @@ export function Dashboard() {
         });
 
         setCars(listCars);
-        console.log(listCars);
       });
     }
 
