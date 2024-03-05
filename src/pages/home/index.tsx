@@ -16,6 +16,8 @@ import {
 import { db } from "../../services/firebaseConnection";
 import { Link } from "react-router-dom";
 import { Footer } from "../../components/footer";
+import toast from "react-hot-toast";
+import { AdImages } from "../../components/adImages";
 
 interface CarsProps {
   id: string;
@@ -49,7 +51,6 @@ export function Home() {
 
     async function loadUserFavorites() {
       if (!user) return;
-      console.log("oi");
 
       const userRef = collection(db, "users");
       const userDoc = doc(userRef, user?.uid);
@@ -132,6 +133,9 @@ export function Home() {
   }
 
   async function handleFavorite(id: string) {
+    if (!user) {
+      return toast.error("Você precisa estar logado para favoritar um anúncio");
+    }
     const userRef = collection(db, "users");
     const userDoc = doc(userRef, user?.uid);
 
@@ -148,8 +152,6 @@ export function Home() {
           favorites: userFavoritesList,
         });
       }
-
-      console.log(userFavoritesList);
 
       setUserFavorites((prevFavorites) => [...prevFavorites, id]);
     }
@@ -175,35 +177,36 @@ export function Home() {
 
   return (
     <Container>
-      <section className="w-full bg-white rounded-md max-w-3xl mx-auto p-3 flex gap-5">
+      <AdImages />
+      <section className="w-full bg-[#333537] rounded-md max-w-3xl mx-auto p-3 flex gap-5">
         <input
-          className="outline-none w-full p-2"
+          className="outline-none w-full py-2 px-4 bg-[#333537] text-white placeholder-white placeholder-opacity-40"
           type="text"
           placeholder="Digite o nome do carro..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
         <button
-          className="bg-[#06233F] px-10 py-2 rounded-md text-white hover:bg-gray-500 transition-all"
+          className="bg-[#0082FF] px-5 md:px-14 py-3 rounded-md text-white hover:bg-sky-700 duration-500"
           onClick={handleSearchCar}
         >
           Buscar
         </button>
       </section>
 
-      <h1 className="text-2xl font-bold text-center my-7">
+      <h1 className="text-base md:text-2xl font-bold text-white text-center my-7">
         Carros novos e usados em todo o Brasil
       </h1>
 
       {isLoading ? (
         <div className="w-full h-96 flex items-center justify-center">
-          <l-ring stroke={6} color="black" size={90} />
+          <l-ring stroke={6} color="white" size={90} />
         </div>
       ) : (
         <main className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 mb-10">
           {cars.map((car) => (
             <section
-              className="w-full bg-white rounded-lg shadow-lg"
+              className="w-full bg-[#2e3135] text-white rounded-lg shadow-lg"
               key={car.id}
             >
               <div
@@ -234,23 +237,23 @@ export function Home() {
                 </div>
                 <Link
                   to={`/car/${car.id}`}
-                  className="bg-[#06233F] py-2 mt-2 text-white rounded-lg text-center hover:bg-gray-500 transition-all cursor-pointer"
+                  className="bg-[#0082FF] py-3 mt-2 text-white font-medium rounded-lg text-center hover:bg-sky-500 transition-all cursor-pointer"
                 >
                   Ver mais
                 </Link>
               </div>
 
-              <div className="h-px bg-slate-300 my-3"></div>
+              <div className="h-px bg-gray-600 my-3"></div>
 
-              <div className="px-4 mb-4 flex items-center justify-between opacity-70">
+              <div className="px-4 mb-4 flex items-center justify-between">
                 <span className="flex items-center gap-2 text-sm">
                   <FiMapPin /> {car.city}
                 </span>
                 <button onClick={() => handleFavorite(car.id)}>
                   {userFavorites.includes(car.id) ? (
-                    <IoIosHeart color="red" />
+                    <IoIosHeart color="#ff4444" size={20} />
                   ) : (
-                    <IoIosHeartEmpty />
+                    <IoIosHeartEmpty size={20} />
                   )}
                 </button>
               </div>

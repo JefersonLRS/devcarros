@@ -100,10 +100,10 @@ export function Dashboard() {
         {cars.map((car) => (
           <section
             key={car.id}
-            className="w-full bg-white rounded-lg shadow-lg relative"
+            className="w-full bg-[#2e3135] rounded-lg shadow-lg relative text-white"
           >
             <button
-              className="h-14 w-14 bg-white rounded-full absolute flex items-center justify-center top-2 right-2 cursor-pointer hover:bg-gray-100 transition-all z-10"
+              className="h-14 w-14 bg-[#1A1A1A] rounded-full absolute flex items-center justify-center top-2 right-2 cursor-pointer hover:bg-[#555555] transition-all z-10"
               onClick={() => toggleModal(car.id)}
             >
               <FiTrash2 size={32} />
@@ -125,13 +125,13 @@ export function Dashboard() {
               </div>
               <Link
                 to={`/car/${car.id}`}
-                className="bg-[#06233F] py-2 mt-2 text-white rounded-lg text-center hover:bg-gray-500 transition-all cursor-pointer"
+                className="bg-[#0082FF] py-3 mt-2 text-white rounded-lg text-center hover:bg-sky-500 transition-all cursor-pointer"
               >
                 Ver mais
               </Link>
             </div>
 
-            <div className="h-px bg-slate-300 my-3"></div>
+            <div className="h-px bg-gray-600 my-3"></div>
 
             <div className="px-4 mb-4 flex items-center justify-between opacity-70">
               <span className="flex items-center gap-2 text-sm">

@@ -20,7 +20,7 @@ export function Input({
   return (
     <div>
       <input
-        className="w-full border-2 rounded-md py-2 px-4 outline-none"
+        className="w-full rounded-md py-3 px-4 outline-none bg-[#333537] text-white placeholder-white placeholder-opacity-30"
         type={type}
         placeholder={placeholder}
         {...register(name, rules)}

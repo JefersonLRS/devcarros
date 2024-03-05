@@ -162,23 +162,23 @@ export function Favorites() {
     <Container>
       <DashboardHeader />
       <main>
-        <h1 className="text-3xl font-bold text-center mb-5">
-          Meus carros favoritos
+        <h1 className="text-3xl font-bold text-center mb-5 text-white">
+          Meus favoritos
         </h1>
 
         {isLoading ? (
           <div className="w-full h-96 flex items-center justify-center">
-            <l-ring stroke={6} color="black" size={90} />
+            <l-ring stroke={6} color="white" size={90} />
           </div>
         ) : userFavoriteCars.length === 0 ? (
           <main className="flex items-center justify-center w-full flex-col h-screen -mt-36">
-            <h1 className="text-2xl font-bold text-gray-500">
+            <h1 className="text-2xl font-bold text-gray-500 text-center">
               Você ainda não tem anúncios favoritos...
             </h1>
 
             <Link
               to="/"
-              className="flex justify-center items-center gap-2 bg-[#06233F] text-white py-3 px-8 rounded-lg ml-4 hover:bg-gray-500 transition-all cursor-pointer text-xl mt-4"
+              className="flex justify-center items-center gap-2 bg-[#0082FF] text-white py-3 px-8 rounded-lg ml-4 hover:bg-sky-500 transition-all cursor-pointer text-xl mt-4"
             >
               Explorar anúncios
             </Link>
@@ -187,7 +187,7 @@ export function Favorites() {
           <main className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 mb-10">
             {cars.map((car) => (
               <section
-                className="w-full bg-white rounded-lg shadow-lg"
+                className="w-full bg-[#2e3135] rounded-lg shadow-lg text-white"
                 key={car.id}
               >
                 <div
@@ -220,23 +220,23 @@ export function Favorites() {
                   </div>
                   <Link
                     to={`/car/${car.id}`}
-                    className="bg-[#06233F] py-2 mt-2 text-white rounded-lg text-center hover:bg-gray-500 transition-all cursor-pointer"
+                    className="bg-[#0082FF] py-2 mt-2 text-white rounded-lg text-center hover:bg-sky-500 transition-all cursor-pointer"
                   >
                     Ver mais
                   </Link>
                 </div>
 
-                <div className="h-px bg-slate-300 my-3"></div>
+                <div className="h-px bg-gray-600 my-3"></div>
 
-                <div className="px-4 mb-4 flex items-center justify-between opacity-70">
+                <div className="px-4 mb-4 flex items-center justify-between">
                   <span className="flex items-center gap-2 text-sm">
                     <FiMapPin /> {car.city}
                   </span>
                   <button onClick={() => handleFavorite(car.id)}>
                     {userFavorites.includes(car.id) ? (
-                      <IoIosHeart color="red" />
+                      <IoIosHeart color="#ff4444" size={20} />
                     ) : (
-                      <IoIosHeartEmpty />
+                      <IoIosHeartEmpty size={20} />
                     )}
                   </button>
                 </div>

@@ -66,7 +66,7 @@ export function Login() {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white p-4 shadow-md max-w-xl w-full rounded-lg"
+          className="bg-[#17181A] p-4 shadow-md max-w-xl w-full rounded-lg"
         >
           <div className="mb-3">
             <Input
@@ -88,7 +88,7 @@ export function Login() {
             />
           </div>
 
-          <button className="bg-[#06233F] text-white w-full p-2 rounded-lg">
+          <button className="bg-gradient-to-r from-blue-900 to-blue-500 text-white w-full p-2 rounded-lg">
             {loadingAuth ? (
               <l-ring stroke={2} color="white" size={25} />
             ) : (
@@ -97,7 +97,7 @@ export function Login() {
           </button>
         </form>
         <div>
-          <p className="mt-4">
+          <p className="mt-4 text-white">
             <span className="opacity-70">Não tem uma conta?</span>
             <span className="">
               <Link to="/register"> Cadastre-se</Link>

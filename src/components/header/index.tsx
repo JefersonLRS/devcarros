@@ -8,7 +8,7 @@ export function Header() {
   const { signed, loadingAuth } = useContext(AuthContext);
 
   return (
-    <div className="w-full flex items-center justify-center h-20 bg-white drop-shadow mb-4">
+    <div className="w-full flex items-center justify-center h-20 bg-[#0E0E0E] drop-shadow ">
       <header className="flex max-w-7xl w-full items-center justify-between px-4 mx-auto">
         <Link to="/">
           <img src={logo} alt="Logo do site" />
@@ -16,8 +16,8 @@ export function Header() {
 
         {!loadingAuth && signed && (
           <Link to="/dashboard">
-            <div className="border-2 rounded-full border-gray-900 p-1">
-              <FiUser size={24} color="black" />
+            <div className="border-2 rounded-full border-white p-1">
+              <FiUser size={24} color="white" />
             </div>
           </Link>
         )}

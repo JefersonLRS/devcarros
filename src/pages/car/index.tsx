@@ -112,7 +112,7 @@ export function CarDetail() {
       )}
 
       {car && (
-        <main className="w-full bg-white rounded-lg p-6 my-4 shadow-lg">
+        <main className="w-full bg-[#2e3135] text-white rounded-lg p-6 my-4 shadow-lg">
           <div className="flex items-center justify-between font-bold md:text-2xl">
             <h1>{car.title}</h1>
             <h1>
@@ -120,7 +120,7 @@ export function CarDetail() {
               {car.price}
             </h1>
           </div>
-          <p>{car.make}</p>
+          <p className="max-w-[60%] md:max-w-full">{car.make}</p>
 
           <div className="flex gap-3 my-10 flex-col md:flex-row md:gap-10 lg:flex-row lg:gap-10">
             <div className="flex flex-col gap-2">

@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="text-center opacity-70 mb-4 mt-16">
+    <footer className="text-center opacity-50 mb-4 mt-16 text-white">
       <p>© DevCarros - Todos os direitos reservados</p>
       <a
         href="https://www.linkedin.com/in/contato-jeferson-luis/"

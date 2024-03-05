@@ -150,7 +150,7 @@ export function New() {
     <Container>
       <DashboardHeader />
 
-      <div className="w-full bg-white p-3 rounded-lg flex flex-col sm:flex-row items-center gap-2">
+      <div className="w-full bg-[#17181A] p-3 rounded-lg flex flex-col sm:flex-row items-center gap-2">
         <button className="border-2 w-48 rounded-lg flex items-center justify-center cursor-pointer border-gray-400 h-32">
           <div className="absolute cursor-pointer">
             <FiUpload size={32} color="#9CA3AF" />
@@ -185,7 +185,7 @@ export function New() {
         ))}
       </div>
 
-      <div className="w-full bg-white p-3 rounded-lg flex flex-col sm:flex-row items-center gap-2 mt-2 mb-10 shadow-lg">
+      <div className="w-full bg-[#121314] text-white p-5 rounded-lg flex flex-col sm:flex-row items-center gap-2 mt-2 mb-10 shadow-lg">
         <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
             <p className="mb-2 font-medium">Título</p>
@@ -269,7 +269,7 @@ export function New() {
           <div className="mb-3 w-full">
             <p className="mb-2 font-medium">Descrição</p>
             <textarea
-              className="border-2 border-gray-400 w-full p-3 rounded-lg h-24 resize-none outline-none"
+              className="w-full p-3 rounded-lg h-24 resize-none outline-none bg-[#333537]"
               {...register("description")}
               name="description"
               id="description"
@@ -281,7 +281,7 @@ export function New() {
           </div>
 
           <button
-            className="bg-[#06233F] text-white w-full py-4 mt-3 rounded-lg"
+            className="bg-[#0082FF] text-white w-full py-4 mt-3 rounded-lg"
             type="submit"
           >
             Anunciar veículo
